@@ -1,125 +1,141 @@
 import 'package:flutter/material.dart';
+import 'package:animations/animations.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MulherApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+class MulherApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Cuidar-se',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primaryColor: Colors.pinkAccent,
+        scaffoldBackgroundColor: Colors.purple[50],
+        fontFamily: 'Pacifico',
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            padding: EdgeInsets.symmetric(vertical: 14, horizontal: 30),
+          ),
+        ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text('Cuidar-se 💖', style: TextStyle(fontFamily: 'DancingScript', fontSize: 26)),
+        backgroundColor: Colors.pinkAccent,
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
+          children: [
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              'Bem-vinda ao Cuidar-se! 🌸',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.pinkAccent, fontFamily: 'DancingScript'),
             ),
+            SizedBox(height: 20),
+            _buildButton(context, 'Dicas de Autocuidado 🌸', DicasPage()),
+            SizedBox(height: 10),
+            _buildButton(context, 'Saúde Feminina 💕', SaudePage()),
+            SizedBox(height: 10),
+            _buildButton(context, 'Calendário de Autocuidado 📅', CalendarioPage()),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Widget _buildButton(BuildContext context, String text, Widget page) {
+    return OpenContainer(
+      closedElevation: 5,
+      closedColor: Colors.white,
+      closedShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      transitionType: ContainerTransitionType.fadeThrough,
+      openBuilder: (context, _) => page,
+      closedBuilder: (context, openContainer) => ElevatedButton(
+        onPressed: openContainer,
+        child: Text(text, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'Pacifico')),
+      ),
+    );
+  }
+}
+
+class DicasPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Dicas de Autocuidado 🌸')),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            Text('Cabelo:', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.pinkAccent)),
+            Text(' - Hidrate os fios semanalmente.\n - Evite calor excessivo.\n - Use protetor térmico antes do secador.'),
+            SizedBox(height: 10),
+            Text('Maquiagem:', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.pinkAccent)),
+            Text(' - Remova a maquiagem antes de dormir.\n - Utilize produtos adequados para seu tipo de pele.\n - Hidrate a pele diariamente.'),
+            SizedBox(height: 10),
+            Text('Depilação:', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.pinkAccent)),
+            Text(' - Esfolie a pele antes de depilar.\n - Hidrate a pele após a depilação.\n - Evite exposição ao sol logo após a depilação.'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SaudePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Saúde Feminina 💕')),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            Text('Alimentação:', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.pinkAccent)),
+            Text(' - Beba pelo menos 2L de água por dia.\n - Consuma alimentos ricos em ferro.\n - Evite excesso de açúcar e gorduras.'),
+            SizedBox(height: 10),
+            Text('Exercícios:', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.pinkAccent)),
+            Text(' - Pratique atividades físicas regularmente.\n - Faça alongamentos diários.\n - Mantenha uma rotina de exercícios leves.'),
+            SizedBox(height: 10),
+            Text('Bem-estar emocional:', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.pinkAccent)),
+            Text(' - Tenha momentos de autocuidado.\n - Medite e pratique a respiração consciente.\n - Priorize seu sono e descanso.'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CalendarioPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Calendário de Autocuidado 📅')),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            Text('Sugestões de Rotina:', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.pinkAccent)),
+            Text(' - Segunda: Hidratação capilar\n - Terça: Exercícios físicos\n - Quarta: Spa em casa\n - Quinta: Esfoliação e depilação\n - Sexta: Rotina de skincare\n - Sábado: Meditação e relaxamento\n - Domingo: Planejamento da semana'),
+          ],
+        ),
+      ),
     );
   }
 }
